@@ -1,0 +1,21 @@
+virtual_buffer:
+  enabled: true
+  rings: 12
+  length_factor: 2.5
+  min_length_factor_bbox: 0.03
+  apex_radius_fraction: 0.02
+
+parameterization:
+  method: auto
+
+mobius:
+  max_iters: 100
+  centroid_tol: 1.0e-7
+
+orientation:
+  signal: log_conformal_factor
+  lmax_orientation: 16
+
+features:
+  nlat: 128
+  nlon: 256

@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=77"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "conformal-sphere-pipeline"
+version = "0.1.0"
+description = "Conformal spherical parameterization and canonicalization pipeline for triangle meshes."
+readme = "README.md"
+requires-python = ">=3.10"
+license = "MIT"
+license-files = ["LICENSE"]
+authors = [
+  {name = "Tarun Makkar"},
+  {name = "Luka Pocivavsek"},
+]
+keywords = ["mesh", "sphere", "conformal", "parameterization", "spherical-harmonics"]
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Science/Research",
+  "Programming Language :: Python :: 3",
+  "Programming Language :: Python :: 3.10",
+  "Programming Language :: Python :: 3.11",
+  "Programming Language :: Python :: 3.12",
+  "Topic :: Scientific/Engineering",
+]
+dependencies = [
+  "lapy==1.6.0",
+  # trimesh's component splitting and repair helpers import networkx lazily.
+  "networkx>=3.0",
+  "numpy>=1.24",
+  "PyYAML>=6.0",
+  "scipy>=1.10",
+  "trimesh>=4.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "build>=1.2",
+  "pytest>=8.0",
+]
+
+[project.scripts]
+conformal-sphere = "conformal_sphere_pipeline.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["conformal_sphere_pipeline*"]
+
+[tool.setuptools.package-data]
+conformal_sphere_pipeline = ["configs/*.yaml"]
