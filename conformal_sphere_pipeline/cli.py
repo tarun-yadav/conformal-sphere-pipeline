@@ -22,7 +22,7 @@ def _build_parser() -> argparse.ArgumentParser:
     canonicalize.add_argument("--lmax-orientation", type=int)
     canonicalize.add_argument("--nlat", type=int)
     canonicalize.add_argument("--nlon", type=int)
-    canonicalize.add_argument("--parameterizer", choices=["auto", "conformal", "radial"], default=None)
+    canonicalize.add_argument("--parameterizer", choices=["auto", "conformal", "radial", "stereographic"], default=None)
     canonicalize.add_argument("--fail-on-warning", action="store_true")
     canonicalize.add_argument("--verbose", action="store_true")
     return parser

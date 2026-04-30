@@ -29,7 +29,8 @@ python3 -m pip install -e .
 The conformal backend uses `lapy`. `method="auto"` tries that conformal backend
 first and falls back to radial projection only when the backend rejects the
 mesh. `method="conformal"` fails explicitly if conformal mapping cannot be
-computed.
+computed. The package also includes a stereographic Bezier backend that can be
+selected with the same `parameterizer` argument.
 
 Supported verification targets are Python 3.11 and 3.12 in CI. Local release
 checks may additionally exercise newer workstation Python versions.
@@ -39,40 +40,74 @@ checks may additionally exercise newer workstation Python versions.
 ```python
 from conformal_sphere_pipeline import (
     ConformalSphereConfig,
+    StereographicConfig,
     canonicalize_mesh_file,
     load_triangle_mesh,
+    parameterize_sphere,
     validate_triangle_mesh,
 )
 
 config = ConformalSphereConfig(parameterizer="auto", nlat=128, nlon=256)
 result = canonicalize_mesh_file("input_mesh.ply", "out/case_001", config=config)
+
+stereo_config = ConformalSphereConfig(parameterizer="stereographic")
+stereo_result = canonicalize_mesh_file("input_mesh.ply", "out/case_001_stereo", config=stereo_config)
 ```
 
 Public API:
 
 - `ConformalSphereConfig`
 - `ConformalSphereResult`
+- `StereographicConfig`
 - `canonicalize_mesh_file`
 - `load_triangle_mesh`
+- `parameterize_sphere`
 - `validate_triangle_mesh`
 
 Parameterization methods:
 
 - `auto`: try the `lapy` conformal backend, then fall back to radial.
 - `conformal`: require the `lapy` conformal backend.
+- `stereographic`: use the stereographic Bezier backend.
 - `radial`: use centroid radial projection.
+
+For direct array-level use, call the shared parameterization entry point:
+
+```python
+from conformal_sphere_pipeline import StereographicConfig, parameterize_sphere
+
+param = parameterize_sphere(
+    vertices,
+    faces,
+    method="stereographic",
+    stereographic_config=StereographicConfig(
+        pole_area_threshold=5e-2,
+        stage_a_max_iter=24,
+        stage_b_max_iter=16,
+    ),
+)
+
+sphere_vertices = param.sphere
+diagnostics = param.info
+```
+
+`parameterize_sphere` expects a closed genus-zero triangular mesh for the
+conformal and stereographic backends. `canonicalize_mesh_file` is the safer
+entry point for open vascular surfaces because it performs the package's
+virtual boundary closure before parameterization.
 
 ## CLI
 
 ```bash
 conformal-sphere canonicalize input_mesh.ply --out out/case_001 --parameterizer auto
+conformal-sphere canonicalize input_mesh.ply --out out/case_001_stereo --parameterizer stereographic
 ```
 
 Useful options:
 
 - `--config default`
 - `--config configs/canonical_sphere.yaml` when running from a source checkout
-- `--parameterizer auto|conformal|radial`
+- `--parameterizer auto|conformal|stereographic|radial`
 - `--no-virtual-buffer`
 - `--orientation-signal log_conformal_factor|radial|combined`
 - `--lmax-orientation 16`
@@ -82,6 +117,43 @@ The default configuration is in `configs/canonical_sphere.yaml`. Its default
 orientation bandwidth is `lmax_orientation: 16`; raise it for slower high-band
 runs when the cohort analysis needs more angular detail. Installed wheel users
 can pass `--config default` to load the packaged copy of the same configuration.
+
+To make the stereographic backend the default for a local run configuration:
+
+```yaml
+parameterization:
+  method: stereographic
+```
+
+## Stereographic Backend
+
+The stereographic backend is an alternative to the conformal backend, not a
+separate pipeline surface. It uses the same high-level CLI, the same
+`ConformalSphereConfig.parameterizer` field, and the same `parameterize_sphere`
+entry point. The backend removes one pole triangle, maps the remaining surface
+to a planar disk, optimizes shared quadratic Bezier controls, maps the result
+back to `S^2` by inverse stereographic projection, and records diagnostics for
+unit-sphere error, pole choice, certified local Jacobian sign, sphere coverage,
+and sampled distortion.
+
+This backend is useful when the downstream question is not angle preservation
+itself, but whether a stable spherical coordinate substrate can support
+comparison across meshes. It does not by itself prove anatomical atlas
+validity. For that, use known-correspondence validation: identical meshes,
+rigid rotations, global scale changes, radial expansions, and localized bulges
+should produce small transition-map residuals after the declared gauge.
+
+The maintained validation runner can exercise both backends with the same
+synthetic known-correspondence cases:
+
+```bash
+python scripts/run_spherical_atlas_validation.py --out /tmp/atlas-stereo --quick --parameterizer stereographic
+python scripts/run_spherical_atlas_validation.py --out /tmp/atlas-conformal --quick --parameterizer conformal
+```
+
+The runner writes its report and figures to the requested output directory. Put
+that output outside the repository unless you intentionally want to archive a
+specific result.
 
 ## Outputs
 
@@ -141,4 +213,9 @@ conformal-sphere --help
 
 The end-to-end synthetic test uses the radial parameterizer for speed. The
 package dependency set still installs `lapy` so the real conformal backend is
-available for actual runs.
+available for actual runs. The stereographic backend and the shared validation
+runner are covered by focused tests:
+
+```bash
+python3 -m pytest tests/test_stereographic_parameterizer.py tests/test_validation_runner.py tests/test_validation_cli.py -q
+```

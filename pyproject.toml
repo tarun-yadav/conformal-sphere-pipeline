@@ -5,7 +5,7 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "conformal-sphere-pipeline"
 version = "0.1.0"
-description = "Conformal spherical parameterization and canonicalization pipeline for triangle meshes."
+description = "Spherical parameterization and canonicalization pipeline for triangle meshes."
 readme = "README.md"
 requires-python = ">=3.10"
 license = "MIT"
@@ -14,7 +14,7 @@ authors = [
   {name = "Tarun Makkar"},
   {name = "Luka Pocivavsek"},
 ]
-keywords = ["mesh", "sphere", "conformal", "parameterization", "spherical-harmonics"]
+keywords = ["mesh", "sphere", "conformal", "stereographic", "parameterization", "spherical-harmonics"]
 classifiers = [
   "Development Status :: 3 - Alpha",
   "Intended Audience :: Science/Research",

@@ -72,7 +72,7 @@ class ConformalSphereConfig:
         if "method" in parameterization:
             method = str(parameterization["method"])
             if method not in PARAMETERIZATION_METHODS:
-                raise ValueError("parameterization.method must be auto, conformal, or radial")
+                raise ValueError("parameterization.method must be auto, conformal, radial, or stereographic")
             cfg.parameterizer = method
         if "signal" in orientation:
             signal = str(orientation["signal"])
@@ -98,7 +98,7 @@ class ConformalSphereConfig:
         """Validate scalar configuration values before a run starts."""
 
         if self.parameterizer not in PARAMETERIZATION_METHODS:
-            raise ValueError("parameterizer must be auto, conformal, or radial")
+            raise ValueError("parameterizer must be auto, conformal, radial, or stereographic")
         if self.orientation_signal not in {"log_conformal_factor", "radial", "combined"}:
             raise ValueError("orientation_signal must be log_conformal_factor, radial, or combined")
         if self.virtual_buffer_rings < 1:

@@ -9,7 +9,7 @@ import numpy as np
 
 from .quality import normalize_rows
 
-PARAMETERIZATION_METHODS = {"auto", "conformal", "radial"}
+PARAMETERIZATION_METHODS = {"auto", "conformal", "radial", "stereographic"}
 
 
 class SphericalParameterizer(Protocol):
@@ -41,18 +41,38 @@ def parameterize_sphere(
     faces: np.ndarray,
     *,
     method: str = "auto",
+    stereographic_config: object | None = None,
 ) -> ParameterizationResult:
     """Compute or reuse a spherical parameterization.
 
     ``method='auto'`` first attempts the optional lapy conformal backend and
     falls back to deterministic radial projection when dependencies or mesh
     conditions prevent conformal mapping. ``method='conformal'`` requires that
-    backend and raises on failure. ``method='radial'`` selects the fallback
+    backend and raises on failure. ``method='stereographic'`` selects the
+    stereographic Bezier backend. ``method='radial'`` selects the fallback
     explicitly, which is useful for tests and diagnostics.
     """
 
     if method not in PARAMETERIZATION_METHODS:
-        raise ValueError("parameterization method must be auto, conformal, or radial")
+        raise ValueError("parameterization method must be auto, conformal, radial, or stereographic")
+
+    if method == "stereographic":
+        from .stereographic import compute_stereographic_parameterization
+
+        result = compute_stereographic_parameterization(
+            vertices,
+            faces,
+            return_info=True,
+            config=stereographic_config,
+        )
+        if isinstance(result, tuple):
+            sphere, info = result
+        else:
+            sphere, info = result, {}
+        return ParameterizationResult(
+            sphere=normalize_rows(sphere),
+            info={"method": "stereographic", **info},
+        )
 
     if method in {"auto", "conformal"}:
         try:
