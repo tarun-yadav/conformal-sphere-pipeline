@@ -6,7 +6,7 @@ import trimesh
 
 class StereographicMathTests(unittest.TestCase):
     def test_inverse_stereographic_has_unit_norm_and_metric_scale(self):
-        from conformal_sphere_pipeline.spherical.stereographic import (
+        from sphere_mapping_pipeline.spherical.stereographic import (
             inverse_stereographic,
             inverse_stereographic_jacobian,
         )
@@ -21,7 +21,7 @@ class StereographicMathTests(unittest.TestCase):
         self.assertTrue(np.allclose(metric, scale * np.eye(2), atol=1e-12))
 
     def test_lyness_jespersen_rule_10_weights_are_normalized(self):
-        from conformal_sphere_pipeline.spherical.stereographic import lyness_jespersen_rule_10
+        from sphere_mapping_pipeline.spherical.stereographic import lyness_jespersen_rule_10
 
         points, weights = lyness_jespersen_rule_10()
         self.assertEqual(points.shape, (12, 2))
@@ -33,7 +33,7 @@ class StereographicMathTests(unittest.TestCase):
 
 class QuadraticBezierPatchTests(unittest.TestCase):
     def test_quadratic_bezier_affine_controls_reproduce_linear_triangle(self):
-        from conformal_sphere_pipeline.spherical.stereographic import QuadraticBezierPatch
+        from sphere_mapping_pipeline.spherical.stereographic import QuadraticBezierPatch
 
         z0 = np.array([0.0, 0.0])
         z1 = np.array([2.0, 0.0])
@@ -47,7 +47,7 @@ class QuadraticBezierPatchTests(unittest.TestCase):
 
 class StereographicInitializerTests(unittest.TestCase):
     def test_stereographic_initializer_builds_positive_disk_for_icosphere(self):
-        from conformal_sphere_pipeline.spherical.stereographic import initialize_stereographic_disk
+        from sphere_mapping_pipeline.spherical.stereographic import initialize_stereographic_disk
 
         mesh = trimesh.creation.icosphere(subdivisions=1, radius=1.0)
         init = initialize_stereographic_disk(
@@ -61,7 +61,7 @@ class StereographicInitializerTests(unittest.TestCase):
         self.assertEqual(init.boundary_vertices.shape, (3,))
 
     def test_stereographic_initializer_accepts_explicit_pole_face(self):
-        from conformal_sphere_pipeline.spherical.stereographic import initialize_stereographic_disk
+        from sphere_mapping_pipeline.spherical.stereographic import initialize_stereographic_disk
 
         mesh = trimesh.creation.icosphere(subdivisions=1, radius=1.0)
         init = initialize_stereographic_disk(
@@ -76,7 +76,7 @@ class StereographicInitializerTests(unittest.TestCase):
         self.assertTrue(np.array_equal(init.pole_face, np.asarray(mesh.faces, dtype=np.int64)[7]))
 
     def test_stereographic_initializer_rejects_invalid_explicit_pole_face(self):
-        from conformal_sphere_pipeline.spherical.stereographic import initialize_stereographic_disk
+        from sphere_mapping_pipeline.spherical.stereographic import initialize_stereographic_disk
 
         mesh = trimesh.creation.icosphere(subdivisions=1, radius=1.0)
         with self.assertRaisesRegex(ValueError, "pole_face_index"):
@@ -89,7 +89,7 @@ class StereographicInitializerTests(unittest.TestCase):
 
 class StereographicBackendTests(unittest.TestCase):
     def test_public_api_exposes_stereographic_backend(self):
-        from conformal_sphere_pipeline import StereographicConfig, parameterize_sphere
+        from sphere_mapping_pipeline import StereographicConfig, parameterize_sphere
 
         mesh = trimesh.creation.icosphere(subdivisions=1, radius=1.0)
         result = parameterize_sphere(
@@ -108,8 +108,8 @@ class StereographicBackendTests(unittest.TestCase):
         self.assertLess(np.max(np.abs(np.linalg.norm(result.sphere, axis=1) - 1.0)), 1e-12)
 
     def test_stereographic_backend_returns_optimized_non_collapsed_sphere(self):
-        from conformal_sphere_pipeline.spherical.stereographic import StereographicConfig
-        from conformal_sphere_pipeline.spherical.parameterize import parameterize_sphere
+        from sphere_mapping_pipeline.spherical.stereographic import StereographicConfig
+        from sphere_mapping_pipeline.spherical.parameterize import parameterize_sphere
 
         mesh = trimesh.creation.icosphere(subdivisions=1, radius=1.0)
         result = parameterize_sphere(
@@ -134,7 +134,7 @@ class StereographicBackendTests(unittest.TestCase):
         self.assertGreater(result.info["max_sigma_iso"], 0.0)
 
     def test_stereographic_config_accepts_explicit_pole_face(self):
-        from conformal_sphere_pipeline.spherical.stereographic import (
+        from sphere_mapping_pipeline.spherical.stereographic import (
             StereographicConfig,
             stereographic_spherical_parameterization,
         )
@@ -157,7 +157,7 @@ class StereographicBackendTests(unittest.TestCase):
         self.assertTrue(result.success)
 
     def test_stereographic_full_result_evaluator_handles_pole_centroid_and_boundary(self):
-        from conformal_sphere_pipeline.spherical.stereographic import (
+        from sphere_mapping_pipeline.spherical.stereographic import (
             StereographicConfig,
             stereographic_spherical_parameterization,
             inverse_stereographic,

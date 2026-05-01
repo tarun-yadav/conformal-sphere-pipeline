@@ -2,11 +2,11 @@ import unittest
 
 import numpy as np
 
-from conformal_sphere_pipeline.boundary import extract_boundary_loops
-from conformal_sphere_pipeline.mesh_qc import validate_triangle_mesh
-from conformal_sphere_pipeline.spherical.features import compute_face_features
-from conformal_sphere_pipeline.spherical.parameterize import radial_parameterization
-from conformal_sphere_pipeline.virtual_buffer import add_virtual_boundary_buffers
+from sphere_mapping_pipeline.boundary import extract_boundary_loops
+from sphere_mapping_pipeline.mesh_qc import validate_triangle_mesh
+from sphere_mapping_pipeline.spherical.features import compute_face_features
+from sphere_mapping_pipeline.spherical.parameterize import radial_parameterization
+from sphere_mapping_pipeline.virtual_buffer import add_virtual_boundary_buffers
 
 
 def make_open_cylinder(n=32, height=2.0, radius=1.0, levels=5):

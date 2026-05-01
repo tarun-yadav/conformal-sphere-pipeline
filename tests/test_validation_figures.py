@@ -4,8 +4,8 @@ from pathlib import Path
 
 import numpy as np
 
-from conformal_sphere_pipeline.validation.figures import write_transition_panel
-from conformal_sphere_pipeline.validation.transition import (
+from sphere_mapping_pipeline.validation.figures import write_transition_panel
+from sphere_mapping_pipeline.validation.transition import (
     atlas_cell_pullback_metrics,
     matched_vertex_transition_metrics,
 )

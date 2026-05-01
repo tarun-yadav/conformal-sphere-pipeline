@@ -16,33 +16,33 @@ ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from conformal_sphere_pipeline.validation.claims import (  # noqa: E402
+from sphere_mapping_pipeline.validation.claims import (  # noqa: E402
     AtlasValidationMetrics,
     ValidationThresholds,
     classify_claim_level,
 )
-from conformal_sphere_pipeline.validation.figures import write_transition_panel  # noqa: E402
-from conformal_sphere_pipeline.validation.gauge import (  # noqa: E402
+from sphere_mapping_pipeline.validation.figures import write_transition_panel  # noqa: E402
+from sphere_mapping_pipeline.validation.gauge import (  # noqa: E402
     harmonic_orient_material_sphere,
     material_face_signal,
     select_material_pole_face,
 )
-from conformal_sphere_pipeline.validation.learning_probe import (  # noqa: E402
+from sphere_mapping_pipeline.validation.learning_probe import (  # noqa: E402
     evaluate_material_decoder,
     fit_material_decoder,
 )
-from conformal_sphere_pipeline.validation.nulls import shuffled_transition_null  # noqa: E402
-from conformal_sphere_pipeline.validation.runner import (  # noqa: E402
+from sphere_mapping_pipeline.validation.nulls import shuffled_transition_null  # noqa: E402
+from sphere_mapping_pipeline.validation.runner import (  # noqa: E402
     SphericalValidationMap,
     SphericalValidationRunConfig,
     run_spherical_validation_map,
 )
-from conformal_sphere_pipeline.validation.synthetic_cases import (  # noqa: E402
+from sphere_mapping_pipeline.validation.synthetic_cases import (  # noqa: E402
     MaterialMesh,
     build_candy_cane_case,
     cap_open_tube_with_material_ids,
 )
-from conformal_sphere_pipeline.validation.transition import (  # noqa: E402
+from sphere_mapping_pipeline.validation.transition import (  # noqa: E402
     atlas_cell_pullback_metrics,
     matched_vertex_transition_metrics,
 )

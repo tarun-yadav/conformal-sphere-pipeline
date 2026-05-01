@@ -4,7 +4,7 @@ import unittest
 import numpy as np
 import trimesh
 
-from conformal_sphere_pipeline.spherical.parameterize import parameterize_sphere
+from sphere_mapping_pipeline.spherical.parameterize import parameterize_sphere
 
 
 class ConformalBackendTests(unittest.TestCase):

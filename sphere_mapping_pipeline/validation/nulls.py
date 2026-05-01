@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from conformal_sphere_pipeline.validation.transition import matched_vertex_transition_metrics, unit_rows
+from sphere_mapping_pipeline.validation.transition import matched_vertex_transition_metrics, unit_rows
 
 
 @dataclass(frozen=True)

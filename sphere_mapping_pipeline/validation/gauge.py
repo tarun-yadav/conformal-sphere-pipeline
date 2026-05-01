@@ -4,9 +4,9 @@ from __future__ import annotations
 
 import numpy as np
 
-from conformal_sphere_pipeline.spherical.orientation import canonical_orient_sphere
-from conformal_sphere_pipeline.spherical.quality import face_areas
-from conformal_sphere_pipeline.validation.synthetic_cases import MaterialMesh
+from sphere_mapping_pipeline.spherical.orientation import canonical_orient_sphere
+from sphere_mapping_pipeline.spherical.quality import face_areas
+from sphere_mapping_pipeline.validation.synthetic_cases import MaterialMesh
 
 
 def select_material_pole_face(

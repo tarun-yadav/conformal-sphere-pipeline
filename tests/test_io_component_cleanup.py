@@ -3,7 +3,7 @@ from pathlib import Path
 import numpy as np
 import trimesh
 
-from conformal_sphere_pipeline.io import load_triangle_mesh
+from sphere_mapping_pipeline.io import load_triangle_mesh
 
 
 def test_load_triangle_mesh_keeps_largest_component(tmp_path):

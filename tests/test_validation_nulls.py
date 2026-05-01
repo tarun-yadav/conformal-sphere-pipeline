@@ -2,8 +2,8 @@ import unittest
 
 import numpy as np
 
-from conformal_sphere_pipeline.validation.nulls import shuffled_transition_null
-from conformal_sphere_pipeline.validation.transition import unit_rows
+from sphere_mapping_pipeline.validation.nulls import shuffled_transition_null
+from sphere_mapping_pipeline.validation.transition import unit_rows
 
 
 class NullModelTests(unittest.TestCase):

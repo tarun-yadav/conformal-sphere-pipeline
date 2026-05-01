@@ -6,7 +6,7 @@ import os
 from pathlib import Path
 import tempfile
 
-_mpl_cache = Path(tempfile.gettempdir()) / "conformal_sphere_pipeline_matplotlib"
+_mpl_cache = Path(tempfile.gettempdir()) / "sphere_mapping_pipeline_matplotlib"
 _mpl_cache.mkdir(parents=True, exist_ok=True)
 os.environ.setdefault("MPLCONFIGDIR", str(_mpl_cache))
 
@@ -18,7 +18,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
 
-from conformal_sphere_pipeline.validation.transition import (
+from sphere_mapping_pipeline.validation.transition import (
     CellPullbackMetrics,
     TransitionMetrics,
     angular_degrees,

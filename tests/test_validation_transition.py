@@ -3,7 +3,7 @@ import unittest
 import numpy as np
 from scipy.spatial.transform import Rotation
 
-from conformal_sphere_pipeline.validation.transition import (
+from sphere_mapping_pipeline.validation.transition import (
     angular_degrees,
     matched_vertex_transition_metrics,
     procrustes_rotation,

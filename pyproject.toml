@@ -3,7 +3,7 @@ requires = ["setuptools>=77"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "conformal-sphere-pipeline"
+name = "sphere-mapping-pipeline"
 version = "0.1.0"
 description = "Spherical parameterization and canonicalization pipeline for triangle meshes."
 readme = "README.md"
@@ -41,10 +41,11 @@ dev = [
 ]
 
 [project.scripts]
-conformal-sphere = "conformal_sphere_pipeline.cli:main"
+sphere-map = "sphere_mapping_pipeline.cli:main"
+conformal-sphere = "sphere_mapping_pipeline.cli:main"
 
 [tool.setuptools.packages.find]
-include = ["conformal_sphere_pipeline*"]
+include = ["sphere_mapping_pipeline*", "conformal_sphere_pipeline"]
 
 [tool.setuptools.package-data]
-conformal_sphere_pipeline = ["configs/*.yaml"]
+sphere_mapping_pipeline = ["configs/*.yaml"]

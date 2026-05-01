@@ -5,18 +5,18 @@ from pathlib import Path
 import numpy as np
 from scipy.spatial.transform import Rotation
 
-from conformal_sphere_pipeline.validation.gauge import (
+from sphere_mapping_pipeline.validation.gauge import (
     harmonic_orient_material_sphere,
     material_face_signal,
     select_material_pole_face,
 )
-from conformal_sphere_pipeline.validation.runner import SphericalValidationRunConfig, run_spherical_validation_map
-from conformal_sphere_pipeline.validation.synthetic_cases import (
+from sphere_mapping_pipeline.validation.runner import SphericalValidationRunConfig, run_spherical_validation_map
+from sphere_mapping_pipeline.validation.synthetic_cases import (
     MaterialMesh,
     build_candy_cane_case,
     cap_open_tube_with_material_ids,
 )
-from conformal_sphere_pipeline.validation.transition import matched_vertex_transition_metrics
+from sphere_mapping_pipeline.validation.transition import matched_vertex_transition_metrics
 
 
 class ValidationGaugeTests(unittest.TestCase):

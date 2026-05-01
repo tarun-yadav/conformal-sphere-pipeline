@@ -1,6 +1,6 @@
-# conformal-sphere-pipeline
+# sphere-mapping-pipeline
 
-`conformal-sphere-pipeline` is a Python package and CLI for mapping triangle
+`sphere-mapping-pipeline` is a Python package and CLI for mapping triangle
 surface meshes to a canonical sphere, `S^2`. It closes open boundary loops with
 virtual buffer geometry, computes a spherical parameterization, recenters the
 map with a Mobius transform, fixes a reproducible spherical-harmonic
@@ -38,8 +38,8 @@ checks may additionally exercise newer workstation Python versions.
 ## Python API
 
 ```python
-from conformal_sphere_pipeline import (
-    ConformalSphereConfig,
+from sphere_mapping_pipeline import (
+    SphereMappingConfig,
     StereographicConfig,
     canonicalize_mesh_file,
     load_triangle_mesh,
@@ -47,17 +47,17 @@ from conformal_sphere_pipeline import (
     validate_triangle_mesh,
 )
 
-config = ConformalSphereConfig(parameterizer="auto", nlat=128, nlon=256)
+config = SphereMappingConfig(parameterizer="auto", nlat=128, nlon=256)
 result = canonicalize_mesh_file("input_mesh.ply", "out/case_001", config=config)
 
-stereo_config = ConformalSphereConfig(parameterizer="stereographic")
+stereo_config = SphereMappingConfig(parameterizer="stereographic")
 stereo_result = canonicalize_mesh_file("input_mesh.ply", "out/case_001_stereo", config=stereo_config)
 ```
 
 Public API:
 
-- `ConformalSphereConfig`
-- `ConformalSphereResult`
+- `SphereMappingConfig`
+- `SphereMappingResult`
 - `StereographicConfig`
 - `canonicalize_mesh_file`
 - `load_triangle_mesh`
@@ -74,7 +74,7 @@ Parameterization methods:
 For direct array-level use, call the shared parameterization entry point:
 
 ```python
-from conformal_sphere_pipeline import StereographicConfig, parameterize_sphere
+from sphere_mapping_pipeline import StereographicConfig, parameterize_sphere
 
 param = parameterize_sphere(
     vertices,
@@ -96,11 +96,15 @@ conformal and stereographic backends. `canonicalize_mesh_file` is the safer
 entry point for open vascular surfaces because it performs the package's
 virtual boundary closure before parameterization.
 
+The previous package import name, `conformal_sphere_pipeline`, is kept as a
+compatibility shim. New code should import `sphere_mapping_pipeline` and use
+`SphereMappingConfig` / `SphereMappingResult`.
+
 ## CLI
 
 ```bash
-conformal-sphere canonicalize input_mesh.ply --out out/case_001 --parameterizer auto
-conformal-sphere canonicalize input_mesh.ply --out out/case_001_stereo --parameterizer stereographic
+sphere-map canonicalize input_mesh.ply --out out/case_001 --parameterizer auto
+sphere-map canonicalize input_mesh.ply --out out/case_001_stereo --parameterizer stereographic
 ```
 
 Useful options:
@@ -112,6 +116,9 @@ Useful options:
 - `--orientation-signal log_conformal_factor|radial|combined`
 - `--lmax-orientation 16`
 - `--nlat 128 --nlon 256`
+
+The old `conformal-sphere` executable is kept as a compatibility alias. New
+commands should use `sphere-map`.
 
 The default configuration is in `configs/canonical_sphere.yaml`. Its default
 orientation bandwidth is `lmax_orientation: 16`; raise it for slower high-band
@@ -129,7 +136,7 @@ parameterization:
 
 The stereographic backend is an alternative to the conformal backend, not a
 separate pipeline surface. It uses the same high-level CLI, the same
-`ConformalSphereConfig.parameterizer` field, and the same `parameterize_sphere`
+`SphereMappingConfig.parameterizer` field, and the same `parameterize_sphere`
 entry point. The backend removes one pole triangle, maps the remaining surface
 to a planar disk, optimizes shared quadratic Bezier controls, maps the result
 back to `S^2` by inverse stereographic projection, and records diagnostics for
@@ -185,7 +192,7 @@ bandwidth, and runtime configuration.
 Batch mode:
 
 ```bash
-conformal-sphere canonicalize input.stl --out /outside/repo/dashboard-dataset/cases/CASE001
+sphere-map canonicalize input.stl --out /outside/repo/dashboard-dataset/cases/CASE001
 ```
 
 Lazy local mode:
@@ -198,7 +205,7 @@ Lazy local mode:
 A dashboard server may call:
 
 ```bash
-conformal-sphere canonicalize /path/to/source.stl --out /path/to/cache/run
+sphere-map canonicalize /path/to/source.stl --out /path/to/cache/run
 ```
 
 and then serves the generated `sphere_display.json`.
@@ -207,8 +214,8 @@ and then serves the generated `sphere_display.json`.
 
 ```bash
 python3 -m pytest tests -q
-python3 -m conformal_sphere_pipeline.cli --help
-conformal-sphere --help
+python3 -m sphere_mapping_pipeline.cli --help
+sphere-map --help
 ```
 
 The end-to-end synthetic test uses the radial parameterizer for speed. The

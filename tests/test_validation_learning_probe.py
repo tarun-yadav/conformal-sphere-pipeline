@@ -2,11 +2,11 @@ import unittest
 
 import numpy as np
 
-from conformal_sphere_pipeline.validation.learning_probe import (
+from sphere_mapping_pipeline.validation.learning_probe import (
     evaluate_material_decoder,
     fit_material_decoder,
 )
-from conformal_sphere_pipeline.validation.transition import unit_rows
+from sphere_mapping_pipeline.validation.transition import unit_rows
 
 
 class LearningProbeTests(unittest.TestCase):

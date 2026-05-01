@@ -6,7 +6,7 @@ from dataclasses import dataclass
 
 import numpy as np
 
-from conformal_sphere_pipeline.validation.transition import unit_rows
+from sphere_mapping_pipeline.validation.transition import unit_rows
 
 
 @dataclass(frozen=True)

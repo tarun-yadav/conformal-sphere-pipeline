@@ -22,7 +22,8 @@ jobs:
         run: python -m pytest tests -q
       - name: CLI help
         run: |
-          python -m conformal_sphere_pipeline.cli --help
+          python -m sphere_mapping_pipeline.cli --help
+          sphere-map --help
           conformal-sphere --help
       - name: Build package
         run: python -m build

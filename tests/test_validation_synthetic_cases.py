@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from conformal_sphere_pipeline.validation.synthetic_cases import (
+from sphere_mapping_pipeline.validation.synthetic_cases import (
     build_candy_cane_case,
     cap_open_tube_with_material_ids,
 )

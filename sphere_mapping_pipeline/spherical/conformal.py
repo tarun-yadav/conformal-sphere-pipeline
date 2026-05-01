@@ -34,7 +34,7 @@ def _compute_lapy_map(vertices: np.ndarray, faces: np.ndarray) -> tuple[np.ndarr
     except ImportError as exc:  # pragma: no cover - depends on optional package
         raise ImportError(
             "lapy is required for method='conformal'. Reinstall "
-            "conformal-sphere-pipeline with its runtime dependencies."
+            "sphere-mapping-pipeline with its runtime dependencies."
         ) from exc
 
     tria = TriaMesh(vertices.astype(np.float64), faces.astype(np.int32))

@@ -7,7 +7,7 @@ from dataclasses import dataclass
 import numpy as np
 import trimesh
 
-from conformal_sphere_pipeline.boundary import extract_boundary_loops
+from sphere_mapping_pipeline.boundary import extract_boundary_loops
 
 
 @dataclass(frozen=True)

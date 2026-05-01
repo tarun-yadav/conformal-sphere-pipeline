@@ -4,9 +4,9 @@ import numpy as np
 import trimesh
 from scipy.spatial.transform import Rotation
 
-from conformal_sphere_pipeline.spherical.orientation import canonical_orient_sphere
-from conformal_sphere_pipeline.spherical.quality import face_areas, spherical_face_centers
-from conformal_sphere_pipeline.spherical.resample import resample_face_signal_to_equiangular
+from sphere_mapping_pipeline.spherical.orientation import canonical_orient_sphere
+from sphere_mapping_pipeline.spherical.quality import face_areas, spherical_face_centers
+from sphere_mapping_pipeline.spherical.resample import resample_face_signal_to_equiangular
 
 
 def orientation_signal(directions):

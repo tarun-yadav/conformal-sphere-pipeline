@@ -1,4 +1,4 @@
-"""Command-line interface for the conformal sphere pipeline."""
+"""Command-line interface for the sphere mapping pipeline."""
 
 from __future__ import annotations
 
@@ -6,11 +6,11 @@ import argparse
 import logging
 from pathlib import Path
 
-from .pipeline import ConformalSphereConfig, canonicalize_mesh_file
+from .pipeline import SphereMappingConfig, canonicalize_mesh_file
 
 
 def _build_parser() -> argparse.ArgumentParser:
-    parser = argparse.ArgumentParser(prog="conformal-sphere")
+    parser = argparse.ArgumentParser(prog="sphere-map")
     sub = parser.add_subparsers(dest="command", required=True)
 
     canonicalize = sub.add_parser("canonicalize", help="canonicalize one triangle mesh")
@@ -35,7 +35,7 @@ def main(argv: list[str] | None = None) -> int:
 
     if args.command == "canonicalize":
         try:
-            cfg = ConformalSphereConfig.from_yaml(args.config)
+            cfg = SphereMappingConfig.from_yaml(args.config)
             if args.no_virtual_buffer:
                 cfg.virtual_buffer_enabled = False
             if args.orientation_signal is not None:

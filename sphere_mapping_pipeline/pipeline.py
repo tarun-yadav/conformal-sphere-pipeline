@@ -1,4 +1,4 @@
-"""End-to-end conformal sphere pipeline."""
+"""End-to-end sphere mapping pipeline."""
 
 from __future__ import annotations
 
@@ -27,7 +27,7 @@ MESH_DISPLAY_SCHEMA_VERSION = "canonical-sphere.physical-mesh-display.v1"
 
 
 @dataclass
-class ConformalSphereConfig:
+class SphereMappingConfig:
     """Runtime configuration for one mesh canonicalization call."""
 
     virtual_buffer_enabled: bool = True
@@ -45,7 +45,7 @@ class ConformalSphereConfig:
     fail_on_warning: bool = False
 
     @classmethod
-    def from_yaml(cls, path: str | Path | None) -> "ConformalSphereConfig":
+    def from_yaml(cls, path: str | Path | None) -> "SphereMappingConfig":
         if path is None:
             return cls()
         data = yaml.safe_load(cls._read_yaml_text(path)) or {}
@@ -126,14 +126,14 @@ class ConformalSphereConfig:
 
 def _default_config_text() -> str:
     return (
-        resources.files("conformal_sphere_pipeline")
+        resources.files("sphere_mapping_pipeline")
         .joinpath("configs/canonical_sphere.yaml")
         .read_text()
     )
 
 
 @dataclass
-class ConformalSphereResult:
+class SphereMappingResult:
     case_id: str
     physical_vertices: np.ndarray
     physical_faces: np.ndarray
@@ -228,7 +228,7 @@ def _field_stats(values: list[float]) -> dict:
     }
 
 
-def _interface_vertex_mask(result: ConformalSphereResult) -> np.ndarray:
+def _interface_vertex_mask(result: SphereMappingResult) -> np.ndarray:
     mask = np.zeros(len(result.physical_vertices), dtype=bool)
     if not np.any(result.interface_face_mask):
         return mask
@@ -239,7 +239,7 @@ def _interface_vertex_mask(result: ConformalSphereResult) -> np.ndarray:
     return mask
 
 
-def _display_interface_face_mask(result: ConformalSphereResult, interface_vertices: np.ndarray) -> np.ndarray:
+def _display_interface_face_mask(result: SphereMappingResult, interface_vertices: np.ndarray) -> np.ndarray:
     if not np.any(interface_vertices):
         return np.zeros(len(result.physical_faces), dtype=bool)
     return np.any(interface_vertices[result.physical_faces], axis=1)
@@ -281,12 +281,12 @@ def _quality_warnings(
 
 def _write_outputs(
     out_dir: Path,
-    result: ConformalSphereResult,
+    result: SphereMappingResult,
     feature_names: list[str],
     display_fields: dict[str, list[float]],
     sh_arrays: dict[str, np.ndarray],
     *,
-    config: ConformalSphereConfig,
+    config: SphereMappingConfig,
     orientation_signal: str,
     lmax_orientation: int,
 ) -> None:
@@ -437,11 +437,11 @@ def canonicalize_mesh_file(
     mesh_path: str | Path,
     out_dir: str | Path,
     *,
-    config: ConformalSphereConfig | None = None,
-) -> ConformalSphereResult:
-    """Run the conformal sphere pipeline on one mesh and write artifacts."""
+    config: SphereMappingConfig | None = None,
+) -> SphereMappingResult:
+    """Run the sphere mapping pipeline on one mesh and write artifacts."""
 
-    cfg = config or ConformalSphereConfig()
+    cfg = config or SphereMappingConfig()
     cfg.validate()
     mesh_path = Path(mesh_path)
     out_dir = Path(out_dir)
@@ -637,7 +637,7 @@ def canonicalize_mesh_file(
         joined = "; ".join(quality["warnings"])
         raise RuntimeError(f"quality warnings encountered with fail_on_warning=true: {joined}")
 
-    result = ConformalSphereResult(
+    result = SphereMappingResult(
         case_id=mesh_path.stem,
         physical_vertices=vertices,
         physical_faces=faces,
@@ -671,3 +671,7 @@ def canonicalize_mesh_file(
         lmax_orientation=cfg.lmax_orientation,
     )
     return result
+
+
+ConformalSphereConfig = SphereMappingConfig
+ConformalSphereResult = SphereMappingResult

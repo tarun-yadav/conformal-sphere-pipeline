@@ -3,8 +3,8 @@ import unittest
 import numpy as np
 import trimesh
 
-from conformal_sphere_pipeline.spherical.mobius import apply_mobius_center_shift, mobius_center
-from conformal_sphere_pipeline.spherical.quality import face_areas
+from sphere_mapping_pipeline.spherical.mobius import apply_mobius_center_shift, mobius_center
+from sphere_mapping_pipeline.spherical.quality import face_areas
 
 
 class MobiusCenterTests(unittest.TestCase):

@@ -7,7 +7,7 @@ from pathlib import Path
 import numpy as np
 import trimesh
 
-from conformal_sphere_pipeline.validation.runner import (
+from sphere_mapping_pipeline.validation.runner import (
     SphericalValidationRunConfig,
     mesh_sha256,
     run_spherical_validation_map,

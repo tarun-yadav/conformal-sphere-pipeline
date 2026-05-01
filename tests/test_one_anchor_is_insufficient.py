@@ -3,13 +3,13 @@ import unittest
 import numpy as np
 import trimesh
 
-from conformal_sphere_pipeline.spherical.orientation import (
+from sphere_mapping_pipeline.spherical.orientation import (
     align_anchor_to_axis,
     resolve_yaw_with_sh,
     rotation_matrix_z,
 )
-from conformal_sphere_pipeline.spherical.quality import face_areas, spherical_face_centers
-from conformal_sphere_pipeline.spherical.resample import resample_face_signal_to_equiangular
+from sphere_mapping_pipeline.spherical.quality import face_areas, spherical_face_centers
+from sphere_mapping_pipeline.spherical.resample import resample_face_signal_to_equiangular
 
 
 def yaw_sensitive_signal(directions):

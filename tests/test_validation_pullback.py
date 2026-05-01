@@ -2,7 +2,7 @@ import unittest
 
 import numpy as np
 
-from conformal_sphere_pipeline.validation.transition import atlas_cell_pullback_metrics, unit_rows
+from sphere_mapping_pipeline.validation.transition import atlas_cell_pullback_metrics, unit_rows
 
 
 class AtlasCellPullbackTests(unittest.TestCase):

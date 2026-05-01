@@ -10,7 +10,7 @@ import re
 
 import numpy as np
 
-from conformal_sphere_pipeline.spherical.stereographic import (
+from sphere_mapping_pipeline.spherical.stereographic import (
     StereographicConfig,
     compute_stereographic_parameterization,
 )
@@ -146,7 +146,7 @@ def _compute_parameterization(
         info = dict(info)
         info.setdefault("injectivity_certification", "adaptive_patch_jacobian")
     else:
-        from conformal_sphere_pipeline.spherical.parameterize import parameterize_sphere
+        from sphere_mapping_pipeline.spherical.parameterize import parameterize_sphere
 
         result = parameterize_sphere(vertices, faces, method="conformal")
         sphere = np.asarray(result.sphere, dtype=np.float64)

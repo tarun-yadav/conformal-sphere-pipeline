@@ -1,6 +1,6 @@
 import unittest
 
-from conformal_sphere_pipeline.validation.claims import (
+from sphere_mapping_pipeline.validation.claims import (
     AtlasValidationMetrics,
     ValidationThresholds,
     classify_claim_level,

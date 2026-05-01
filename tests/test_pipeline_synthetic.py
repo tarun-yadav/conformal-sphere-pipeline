@@ -8,8 +8,8 @@ from pathlib import Path
 import numpy as np
 import trimesh
 
-from conformal_sphere_pipeline.cli import main
-from conformal_sphere_pipeline.pipeline import ConformalSphereConfig
+from sphere_mapping_pipeline.cli import main
+from sphere_mapping_pipeline.pipeline import SphereMappingConfig
 
 
 def make_curved_open_tube(n_sections=16, n_ring=20):
@@ -48,18 +48,27 @@ def make_curved_open_tube(n_sections=16, n_ring=20):
 
 class SyntheticPipelineTests(unittest.TestCase):
     def test_config_rejects_invalid_grid_and_orientation_bandwidth(self):
-        cfg = ConformalSphereConfig(nlat=1)
+        cfg = SphereMappingConfig(nlat=1)
         with self.assertRaises(ValueError):
             cfg.validate()
 
     def test_default_config_resource_loads(self):
-        cfg = ConformalSphereConfig.from_yaml("default")
+        cfg = SphereMappingConfig.from_yaml("default")
         self.assertEqual(cfg.lmax_orientation, 16)
-        cfg = ConformalSphereConfig.from_yaml("configs/canonical_sphere.yaml")
+        cfg = SphereMappingConfig.from_yaml("configs/canonical_sphere.yaml")
         self.assertEqual(cfg.nlat, 128)
-        cfg = ConformalSphereConfig(lmax_orientation=1)
+        cfg = SphereMappingConfig(lmax_orientation=1)
         with self.assertRaises(ValueError):
             cfg.validate()
+
+    def test_legacy_import_alias_points_to_renamed_package(self):
+        import conformal_sphere_pipeline as legacy
+        import sphere_mapping_pipeline as current
+        from conformal_sphere_pipeline.spherical.parameterize import parameterize_sphere as legacy_parameterize
+
+        self.assertIs(legacy.SphereMappingConfig, current.SphereMappingConfig)
+        self.assertIs(legacy.ConformalSphereConfig, current.SphereMappingConfig)
+        self.assertIs(legacy_parameterize, current.parameterize_sphere)
 
     def test_cli_canonicalize_synthetic_open_tube_outputs_artifacts(self):
         vertices, faces = make_curved_open_tube()
